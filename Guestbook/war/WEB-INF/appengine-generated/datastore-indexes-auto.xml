@@ -1,0 +1,6 @@
+<!-- Indices written at Sat, 16 Feb 2013 22:18:33 UTC -->
+<datastore-indexes autoGenerate="true">
+	<datastore-index kind="Greeting" ancestor="true">
+		<property name="date" direction="desc" />
+	</datastore-index>
+</datastore-indexes>

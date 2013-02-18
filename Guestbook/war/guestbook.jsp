@@ -32,7 +32,7 @@
       pageContext.setAttribute("user", user);
 %>
 	<p>
-		Hello, ${fn:escapeXml(user.nickname)}! (You can <a
+		Hello, <%= user.getNickname() %> (You can <a
 			href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign
 			out</a>.)
 	</p>
@@ -57,11 +57,11 @@
     List<Entity> greetings = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(5));
     if (greetings.isEmpty()) {
         %>
-	<p>Guestbook '${fn:escapeXml(guestbookName)}' has no messages.</p>
+	<p>Guestbook '<%= guestbookName %>' has no messages.</p>
 	<%
     } else {
         %>
-	<p>Messages in Guestbook '${fn:escapeXml(guestbookName)}'.</p>
+	<p>Messages in Guestbook '<%= guestbookName %>'.</p>
 	<%
         for (Entity greeting : greetings) {
             pageContext.setAttribute("greeting_content",
@@ -75,12 +75,12 @@
                                          greeting.getProperty("user"));
                 %>
 	<p>
-		<b>${fn:escapeXml(greeting_user.nickname)}</b> wrote:
+		<b><%= ((User)greeting.getProperty("user")).getNickname() %></b> wrote:
 	</p>
 	<%
             }
             %>
-	<blockquote>${fn:escapeXml(greeting_content)}</blockquote>
+	<blockquote><%= greeting.getProperty("content") %></blockquote>
 	<%
         }
     }
@@ -94,7 +94,7 @@
 			<input type="submit" value="Post Greeting" />
 		</div>
 		<input type="hidden" name="guestbookName"
-			value="${fn:escapeXml(guestbookName)}" />
+			value="<%= guestbookName %>" />
 	</form>
 
 </body>

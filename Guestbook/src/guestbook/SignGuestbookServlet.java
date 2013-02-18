@@ -33,11 +33,14 @@ public class SignGuestbookServlet extends HttpServlet {
 		String guestbookName = req.getParameter("guestbookName");
 		Key guestbookKey = KeyFactory.createKey("Guestbook", guestbookName);
 		String content = req.getParameter("content");
+		String subject = req.getParameter("subject");
 		Date date = new Date();
+		System.out.println(date.toString());
 		Entity greeting = new Entity("Greeting", guestbookKey);
 		greeting.setProperty("user", user);
 		greeting.setProperty("date", date);
 		greeting.setProperty("content", content);
+		greeting.setProperty("subject", subject);
 
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();

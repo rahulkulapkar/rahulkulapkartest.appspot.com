@@ -1,3 +1,6 @@
+<%@page import="java.util.TimeZone"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.google.appengine.api.users.User"%>
@@ -22,6 +25,8 @@
 
 	<%
     String guestbookName = request.getParameter("guestbookName");
+	SimpleDateFormat sdf = new SimpleDateFormat("EEE d MMM, yyyy h:mm a");
+	sdf.setTimeZone(TimeZone.getTimeZone("GMT+530"));
     if (guestbookName == null) {
         guestbookName = "default";
     }
@@ -68,18 +73,19 @@
                                      greeting.getProperty("content"));
             if (greeting.getProperty("user") == null) {
                 %>
-	<p>An anonymous person wrote:</p>
+	<p>An anonymous person wrote on <%= sdf.format(((Date)greeting.getProperty("date"))) %>:</p>
 	<%
             } else {
                 pageContext.setAttribute("greeting_user",
                                          greeting.getProperty("user"));
                 %>
 	<p>
-		<b><%= ((User)greeting.getProperty("user")).getNickname() %></b> wrote:
+		<b><%= ((User)greeting.getProperty("user")).getNickname() %></b> wrote on <%= sdf.format(((Date)greeting.getProperty("date"))) %>:
 	</p>
 	<%
             }
             %>
+	<blockquote><b><%= greeting.getProperty("subject") %></b></blockquote>
 	<blockquote><%= greeting.getProperty("content") %></blockquote>
 	<%
         }
@@ -87,6 +93,9 @@
 %>
 
 	<form action="/sign" method="post">
+		<div>
+			Subject: <input type="text" name="subject" maxlength="20" />
+		</div>
 		<div>
 			<textarea name="content" rows="3" cols="80"></textarea>
 		</div>
